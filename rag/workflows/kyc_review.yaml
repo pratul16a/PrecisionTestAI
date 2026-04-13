@@ -1,0 +1,14 @@
+name: kyc_review
+app: ICE
+description: "Review KYC verification status and risk assessment for a client"
+params:
+  client_id: { type: string, example: "900015" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "KYC Status", type: tab } }
+  - { verify: { visible: "KYC Verification Status" } }
+  - { verify: { visible: "Risk Assessment" } }
+tags: [client, kyc, compliance, verification, risk]

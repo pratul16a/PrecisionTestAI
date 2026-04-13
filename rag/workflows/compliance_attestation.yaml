@@ -1,0 +1,12 @@
+name: compliance_attestation
+app: ICE
+description: "Complete a pending compliance attestation"
+params:
+  attestation_name: { type: string, example: "Annual AML Training Completion" }
+steps:
+  - { navigate: { page: Compliance, via: sidebar } }
+  - { click: { element: "Attestations", type: tab } }
+  - { verify: { visible: "Pending Attestations" } }
+  - { verify: { visible: "{attestation_name}" } }
+  - { click: { element: "Complete", type: button, context: "row containing {attestation_name}" } }
+tags: [compliance, attestation, complete]

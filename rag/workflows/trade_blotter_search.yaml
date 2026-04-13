@@ -1,0 +1,10 @@
+name: trade_blotter_search
+app: ICE
+description: "Search and verify trades in the trade blotter"
+params:
+  search_term: { type: string, example: "FX Forward" }
+steps:
+  - { navigate: { page: Trade Blotter, via: sidebar } }
+  - { enter: { field: search, value: "{search_term}" } }
+  - { verify: { visible: "trades" } }
+tags: [trades, blotter, search, grid]

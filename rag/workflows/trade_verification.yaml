@@ -1,0 +1,15 @@
+name: trade_verification
+app: ICE
+description: "Verify a specific trade for a client"
+params:
+  client_id: { type: string, example: "900010" }
+  trade_id: { type: string, example: "TRD-100005" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "Trades", type: tab } }
+  - { enter: { field: trade filter, value: "{trade_id}" } }
+  - { verify: { visible: "{trade_id}" } }
+tags: [client, trades, verification, search, grid]

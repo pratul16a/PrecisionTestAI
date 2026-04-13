@@ -1,0 +1,23 @@
+name: full_client_audit
+app: ICE
+description: "Comprehensive review of a client - checks all tabs"
+params:
+  client_id: { type: string, example: "900003" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "Overview", type: tab } }
+  - { verify: { visible: "Client Information" } }
+  - { verify: { visible: "Activity Summary" } }
+  - { click: { element: "Client Feedback", type: tab } }
+  - { verify: { one_of: [{ visible: "No Client Feedback" }, { visible: "Feedback Records" }] } }
+  - { click: { element: "Documents", type: tab } }
+  - { verify: { visible: "Documents" } }
+  - { click: { element: "Trades", type: tab } }
+  - { verify: { visible: "trades" } }
+  - { click: { element: "KYC Status", type: tab } }
+  - { verify: { visible: "KYC Verification Status" } }
+  - { verify: { visible: "Risk Assessment" } }
+tags: [client, audit, comprehensive, all-tabs]

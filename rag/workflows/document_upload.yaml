@@ -1,0 +1,17 @@
+name: document_upload
+app: ICE
+description: "Upload a document for a specific client"
+params:
+  client_id: { type: string, example: "900005" }
+  doc_title: { type: string, example: "Q1 Risk Assessment Report" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "Documents", type: tab } }
+  - { click: { element: "Upload Document", type: button } }
+  - { verify: { visible: "Upload Document" } }
+  - { enter: { field: document title, value: "{doc_title}" } }
+  - { click: { element: "Submit", type: button, context: modal } }
+tags: [client, documents, upload, modal, form]

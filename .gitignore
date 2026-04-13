@@ -1,0 +1,17 @@
+# Environment & secrets
+.env
+venv/
+__pycache__/
+
+# Artifacts & caches
+artifacts/
+locator_cache/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

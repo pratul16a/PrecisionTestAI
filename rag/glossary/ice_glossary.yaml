@@ -1,0 +1,60 @@
+app: ICE
+version: 1.0
+terms:
+  client:
+    maps_to: { page: Client Search, element: search input }
+    aliases: [customer, account, counterparty, entity]
+  SID:
+    maps_to: { page: Client Search, element: search input }
+    aliases: [client ID, client number, account number, client code]
+    pattern: "\\d{6}"
+  client detail:
+    maps_to: { page: Client Detail, element: null }
+    aliases: [client page, client view, client profile]
+  feedback:
+    maps_to: { page: Client Detail, element: Client Feedback tab }
+    aliases: [complaints, client comments, client feedback, issues, grievances]
+  new feedback:
+    maps_to: { page: Client Detail, element: "+ New Feedback button" }
+    aliases: [create feedback, add feedback, raise complaint, log complaint, file complaint]
+  documents:
+    maps_to: { page: Client Detail, element: Documents tab }
+    aliases: [docs, attachments, files, papers, uploads, document]
+  upload:
+    maps_to: { page: Client Detail, element: "Upload Document button" }
+    aliases: [attach, add document, submit document, upload file, upload doc]
+  trades:
+    maps_to: { page: Client Detail, element: Trades tab }
+    aliases: [trade activity, trade history, transactions]
+  trade blotter:
+    maps_to: { page: Trade Blotter, element: null }
+    aliases: [blotter, all trades, trade book, trade log]
+  kyc:
+    maps_to: { page: Client Detail, element: KYC Status tab }
+    aliases: [KYC status, kyc check, kyc review, know your customer, verification status, verify kyc]
+  risk:
+    maps_to: { page: Client Detail, element: KYC Status tab > Risk Assessment }
+    aliases: [risk assessment, risk score, risk rating, risk level, risk profile]
+  compliance:
+    maps_to: { page: Compliance, element: null }
+    aliases: [regulatory, regulation, compliance page]
+  reports:
+    maps_to: { page: Compliance, element: Reports tab }
+    aliases: [compliance reports, regulatory reports, filings, compliance report]
+  attestation:
+    maps_to: { page: Compliance, element: Attestations tab }
+    aliases: [attestations, certifications, acknowledgments, sign-off]
+  regulatory feed:
+    maps_to: { page: Compliance, element: Regulatory Feed tab }
+    aliases: [regulations, regulatory updates, ecb feed]
+  dashboard:
+    maps_to: { page: Dashboard, element: null }
+    aliases: [home, main page, landing, overview, summary]
+  search:
+    maps_to: { page: Client Search, element: Search button }
+    aliases: [find, look up, query, search for]
+  audit:
+    aliases: [full audit, comprehensive review, full review, complete audit]
+  check:
+    action: verify
+    aliases: [verify, review, confirm, see, view, look at, inspect]

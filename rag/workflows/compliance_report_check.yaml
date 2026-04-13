@@ -1,0 +1,11 @@
+name: compliance_report_check
+app: ICE
+description: "Review compliance reports and their statuses"
+params: {}
+steps:
+  - { navigate: { page: Compliance, via: sidebar } }
+  - { click: { element: "Reports", type: tab } }
+  - { verify: { visible: "Q1 2026 Compliance Summary" } }
+  - { verify: { visible: "SAR Filing Report" } }
+  - { verify: { visible: "AML Transaction Monitoring" } }
+tags: [compliance, reports, review]

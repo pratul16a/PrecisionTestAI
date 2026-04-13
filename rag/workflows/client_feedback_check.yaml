@@ -1,0 +1,13 @@
+name: client_feedback_check
+app: ICE
+description: "Search for a client and verify their feedback status"
+params:
+  client_id: { type: string, example: "902128" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "Client Feedback", type: tab } }
+  - { verify: { one_of: [{ visible: "No Client Feedback" }, { visible: "Feedback Records" }] } }
+tags: [client, feedback, verification, search]

@@ -1,0 +1,15 @@
+name: client_search_filtered
+app: ICE
+description: "Search for clients with region and status filters applied"
+params:
+  search_term: { type: string, example: "Goldman" }
+  region: { type: string, enum: ["", AMER, EMEA, APAC, LATAM], example: "AMER" }
+  status: { type: string, enum: ["", Active, "Pending Review", Suspended, "Under Investigation"], example: "Active" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{search_term}" } }
+  - { action: search }
+  - { select: { field: region filter, value: "{region}", component: shadow dropdown } }
+  - { select: { field: status filter, value: "{status}", component: shadow dropdown } }
+  - { verify: { visible: "results found" } }
+tags: [client, search, filter, region, status, dropdown]

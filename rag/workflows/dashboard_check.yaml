@@ -1,0 +1,12 @@
+name: dashboard_check
+app: ICE
+description: "Check dashboard for pending items and recent activity"
+params: {}
+steps:
+  - { navigate: { page: Dashboard, via: sidebar } }
+  - { verify: { visible: "Total Clients" } }
+  - { verify: { visible: "Pending Reviews" } }
+  - { verify: { visible: "Active Investigations" } }
+  - { verify: { visible: "Documents Due" } }
+  - { verify: { visible: "Recent Activity" } }
+tags: [dashboard, monitoring, summary]

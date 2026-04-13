@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrecisionTest AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #12122a;
+            padding: 16px 24px;
+            border-bottom: 1px solid #2a2a4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header .logo {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 18px;
+        }
+        .header h1 { font-size: 18px; font-weight: 600; }
+        .header .subtitle { font-size: 12px; color: #888; margin-top: 2px; }
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: #6366f1;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.assistant {
+            align-self: flex-start;
+            background: #1e1e3a;
+            border: 1px solid #2a2a4a;
+            border-bottom-left-radius: 4px;
+        }
+        .message.assistant .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .status-running { background: #1e3a5f; color: #60a5fa; }
+        .status-success { background: #1a2e1a; color: #4ade80; }
+        .status-failed { background: #2e1a1a; color: #f87171; }
+        .steps-list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .step-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .step-dot.success { background: #4ade80; }
+        .step-dot.failed { background: #f87171; }
+        .step-dot.pending { background: #fbbf24; }
+        .report-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: #6366f1;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .report-link:hover { background: #4f46e5; }
+        .input-area {
+            padding: 16px 24px;
+            background: #12122a;
+            border-top: 1px solid #2a2a4a;
+            display: flex;
+            gap: 12px;
+        }
+        .input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #1e1e3a;
+            border: 1px solid #2a2a4a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            outline: none;
+        }
+        .input-area input:focus { border-color: #6366f1; }
+        .input-area input::placeholder { color: #555; }
+        .input-area button {
+            padding: 12px 24px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .input-area button:hover { background: #4f46e5; }
+        .input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .typing-indicator {
+            display: flex; gap: 4px; padding: 8px 0;
+        }
+        .typing-indicator span {
+            width: 6px; height: 6px; background: #6366f1;
+            border-radius: 50%; animation: bounce 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+        }
+        .examples {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 12px 24px;
+        }
+        .example-chip {
+            padding: 6px 12px;
+            background: #1e1e3a;
+            border: 1px solid #2a2a4a;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .example-chip:hover { border-color: #6366f1; color: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">P</div>
+        <div>
+            <h1>PrecisionTest AI</h1>
+            <div class="subtitle">NL → Browser Automation → BDD Test Generation</div>
+        </div>
+    </div>
+
+    <div class="chat-container" id="chat">
+        <div class="message assistant">
+            👋 Hi! Describe what you want to test in plain English. I'll launch a browser, execute the steps, 
+            generate XPath locators, and produce a BDD feature file + visual report.<br><br>
+            <strong>Example:</strong> "Launch a browser and navigate to https://example.com. Click on Login. 
+            Enter 'admin' in username. Enter 'password' in password field. Click Submit. 
+            Verify 'Welcome' is visible."
+        </div>
+    </div>
+
+    <div class="examples">
+        <div class="example-chip" onclick="useExample(this)">Launch browser, go to example.com, verify title</div>
+        <div class="example-chip" onclick="useExample(this)">Navigate to login page, enter credentials, submit</div>
+        <div class="example-chip" onclick="useExample(this)">Search for a product, add to cart, verify cart count</div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="promptInput" placeholder="Describe your test scenario in plain English..." 
+               onkeypress="if(event.key==='Enter')sendPrompt()">
+        <button id="sendBtn" onclick="sendPrompt()">Run Test ▶</button>
+    </div>
+
+    <script>
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('promptInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function useExample(el) {
+            input.value = el.textContent;
+            input.focus();
+        }
+
+        function addMessage(content, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = content;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+            return div;
+        }
+
+        function showTyping() {
+            const div = addMessage(
+                '<div class="typing-indicator"><span></span><span></span><span></span></div>' +
+                '<span style="color:#888;font-size:12px;margin-left:8px;">Running pipeline...</span>',
+                'assistant'
+            );
+            div.id = 'typing';
+            return div;
+        }
+
+        async function sendPrompt() {
+            const prompt = input.value.trim();
+            if (!prompt) return;
+
+            addMessage(prompt, 'user');
+            input.value = '';
+            sendBtn.disabled = true;
+
+            const typing = showTyping();
+
+            try {
+                const res = await fetch('/run_playwright_codegen', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+                const data = await res.json();
+                typing.remove();
+
+                if (data.error) {
+                    addMessage(`<span class="status-badge status-failed">ERROR</span> ${data.error}`, 'assistant');
+                    return;
+                }
+
+                // Build result message
+                const statusBadge = data.failed > 0
+                    ? `<span class="status-badge status-failed">FAILED</span>`
+                    : `<span class="status-badge status-success">PASSED</span>`;
+
+                let stepsHtml = '<div class="steps-list">';
+                for (const step of (data.results || [])) {
+                    const dotClass = step.status === 'success' ? 'success' : 'failed';
+                    stepsHtml += `<div class="step-item">
+                        <div class="step-dot ${dotClass}"></div>
+                        <span>${step.featurestep || step.tool}</span>
+                    </div>`;
+                }
+                stepsHtml += '</div>';
+
+                const summary = `${statusBadge} <strong>${data.passed}/${data.total_steps} steps passed</strong> | App: ${data.app_name} | Run: ${data.run_id}`;
+                const reportBtn = `<a class="report-link" href="/reports/${data.run_id}" target="_blank">📊 View Full Report</a>`;
+
+                addMessage(`${summary}${stepsHtml}${reportBtn}`, 'assistant');
+
+            } catch (err) {
+                typing.remove();
+                addMessage(`<span class="status-badge status-failed">ERROR</span> ${err.message}`, 'assistant');
+            } finally {
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+    </script>
+</body>
+</html>

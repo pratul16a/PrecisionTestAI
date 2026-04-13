@@ -1,0 +1,23 @@
+name: new_feedback
+app: ICE
+description: "Create a new feedback record for a client"
+params:
+  client_id: { type: string, example: "900003" }
+  subject: { type: string, example: "Settlement delay on FX trade" }
+  feedback_type: { type: string, enum: [Complaint, Inquiry, Suggestion, Escalation], example: "Complaint" }
+  priority: { type: string, enum: [Low, Medium, High, Critical], example: "High" }
+  description: { type: string, example: "Client reported 2-day delay in FX forward settlement" }
+steps:
+  - { navigate: { page: Client Search, via: sidebar } }
+  - { enter: { field: search, value: "{client_id}" } }
+  - { action: search }
+  - { click: { element: "{client_id}", type: option, context: results grid } }
+  - { click: { element: "Client Feedback", type: tab } }
+  - { click: { element: "New Feedback", type: button } }
+  - { verify: { visible: "New Feedback" } }
+  - { enter: { field: subject, value: "{subject}" } }
+  - { select: { field: type dropdown, value: "{feedback_type}" } }
+  - { select: { field: priority dropdown, value: "{priority}" } }
+  - { enter: { field: description, value: "{description}" } }
+  - { click: { element: "Submit", type: button, context: modal } }
+tags: [client, feedback, create, modal, form, dropdown, new]
