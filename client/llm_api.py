@@ -28,7 +28,7 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
 )
 
-DEFAULT_MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4")
+DEFAULT_MODEL = os.environ.get("OPENROUTER_MODEL", "anthropic/claude-sonnet-4-5")
 
 
 def call_llm(prompt: str, model: str = DEFAULT_MODEL, max_tokens: int = 4096) -> str:
