@@ -1,16 +1,29 @@
 # Environment & secrets
 .env
+.env.local
+.env.*.local
 venv/
 __pycache__/
-
-# Artifacts & caches
-artifacts/
-locator_cache/
 *.pyc
+
+# Node / build outputs
+node_modules/
+sample_app/dist/
+sample_app/.vite/
+sample_app/node_modules/.vite/
+
+# Claude Code local settings
+.claude/
+
+# Test run outputs
+artifacts/
+features/generic_*.feature
+locator_cache/
 
 # IDE
 .vscode/
 .idea/
+*.swp
 
 # OS
 Thumbs.db
