@@ -175,7 +175,7 @@ async def enter_text(args: dict, config: dict) -> dict:
     """Enter text into an input field."""
     run_id = args.get("run_id", "default")
     field_name = args.get("field_name", "")
-    text = args.get("textToEnter", "")
+    text = args.get("textToEnter", "") or args.get("text", "")
     session = await get_or_create_session(run_id)
 
     try:
